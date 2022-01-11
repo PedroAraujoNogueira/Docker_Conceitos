@@ -1,0 +1,30 @@
+1. Bind mount
+O bind mount é o compartilhamento de uma pasta do seu computador para uma pasta do container.
+A vantagem de usarmos o bind mount é que se o container morrer o arquivo continuará, pois também 
+está na pasta do nosso computador e não somente no container.
+Podemos fazer isso com a flag -v como mostra o comando abaixo:
+-> docker run -d --name nginx2 -p 82:80 -v ~/Documentos/ProjetosPessoais/docker/html/:/usr/share/nginx/html --rm nginx
+Com o -v estamos dizendo que queremos montar a pasta ~/Documentos/ProjetosPessoais/docker/html/
+pertencente ao nosso computador na pasta /usr/share/nginx/html pertencente ao container.
+OBS: Todas as alterações que fizermos na pasta do nosso computador serão refletidas no container 
+e todas as alterações que fizermos na pasta do container serão refletidas no nosso 
+computador, inclusive criação de novos arquivos e pastas dentro dessa pasta.
+
+2. A flag -v é considerado um comando antigo. Hoje em dia se usa o --mount ao invés de -v.
+Um exemplo usando o --mount seria:
+docker run -d --name nginx2 -p 8082:80 --mount type=bind,source=/home/pedro/Documentos/ProjetosPessoais/docker/html,target=/usr/share/nginx/html nginx
+O parametro "source" é o caminho absoluto da pasta do nosso computador.
+O parametro "target" é o caminho absoluto da pasta do nosso container.
+OBS: Todas as alterações que fizermos na pasta do nosso computador serão refletidas no container 
+e todas as alterações que fizermos na pasta do container serão refletidas no nosso 
+computador, inclusive criação de novos arquivos e pastas dentro dessa pasta.
+
+3. As vantagens de se usar o --mount em relação ao -v são:
+-> O --mount se torna mais explícito com os parâmetros type, source e target.
+-> Com -v se digitarmos um caminho da nossa maquina que não existe, ele vai criar 
+essa pasta podendo ocasionar erros. Já com o --mount se digitarmos um caminho da nossa
+máquina que não existe, ele vai dar um erro nos avisando que o caminho não foi encontrado
+e então ele não vai criar o container.
+
+OBS: A base para trabalharmos com o Docker em ambiente de desenvolvimento é o compartilhamento 
+de volumes.

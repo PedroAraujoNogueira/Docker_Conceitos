@@ -1,0 +1,13 @@
+FROM ubuntu:latest
+
+# O CMD pode ser substituído pelo último parâmetro que colocamos 
+# no comando docker run, como por exemplo:
+# docker run --rm pedroaraujonogueira/hello:latest echo Pedro
+# Aplicado em: CMD [ "echo", "World" ]
+
+# O ENTRYPOINT é sempre um comando fixo.
+ENTRYPOINT [ "echo", "Hello" ]
+
+# Quando O comando CMD aparece após um ENTRYPOINT, o CMD acaba sendo um paramêtro de 
+# um ENTRYPOINT.
+CMD [ "World" ]

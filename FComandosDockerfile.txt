@@ -1,0 +1,49 @@
+FROM: ImageName -> O FROM vai baixar a imagem e as dependencias dessa imagem.
+
+WORKDIR: é o diretório que vamos trabalhar dentro do container. Todos os comandos seguintes 
+vão considerar o direto do WORKDIR como referência.
+
+RUN: Roda comandos.
+
+EXPOSE: Expoe a porta de um container, porém não expoe essa porta para a minha 
+máquina(diferente do que faz o -p do docker run), expoe apenas para os containers
+da mesma rede. 
+
+COPY <src>... <dest>: A instrução COPY copia novos arquivos ou diretórios <src> e os
+adiciona ao sistema de arquivos do contêiner no caminho <dest>.
+
+OBS: olhar como exemplo o dockerfile.exemplo2
+OBS2: Perceba que ao rodarmos essa imagem do dockerfile.exemplo2 
+com "docker run -it pedroaraujonogueira/nginx-com-vim:latest bash" ela irá
+começar no terminar a partir do caminho do WORKDIR, no nosso caso, a 
+partir do /app. E Dentro de /usr/share/nginx/html terá o conteúdo da
+pasta html da nossa maquina.
+
+CMD:
+A instrução CMD tem três formas:
+CMD ["executable","param1","param2"]( formulário exec , este é o formulário preferido)
+CMD ["param1","param2"](como parâmetros padrão para ENTRYPOINT )
+CMD command param1 param2( forma de concha )
+Só pode haver uma instrução CMD em a Dockerfile. Se você listar mais de um CMD, 
+apenas o último CMD terá efeito.
+O comando e os parâmetros dentro do CMD podem mudar.
+
+ENTRYPOINT:
+Um ENTRYPOINT permite que você configure um contêiner que será executado como um 
+executável.
+O ENTRYPOINT é sempre um comando fixo.
+O formulário exec, que é o formulário preferencial: ENTRYPOINT ["executable", "param1", "param2"]
+
+CMD VS ENTRYPOINT
+
+-> O CMD pode ser substituído pelo último parâmetro que colocamos no comando docker 
+run, por exemplo:
+docker run --rm pedroaraujonogueira/hello:latest echo Pedro
+De acordo com a documentação:
+Os argumentos da linha de comando para "docker run <image>" serão anexados após
+todos os elementos em um formulário exec ENTRYPOINT e substituirão todos os elementos
+especificados usando CMD.
+-> Quando tem o comando Entrypoint o comando CMD, se houver, só pode aparecer após o 
+ENTRYPOINT. O CMD acaba sendo um paramêtro de um ENTRYPOINT.
+
+OBS: olhar como exemplo o dockerfile.exemplo3

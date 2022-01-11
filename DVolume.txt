@@ -1,0 +1,52 @@
+-> O Bind Mount e os Volumes no Docker são parecidos, porém o conceito de Volumes no Docker
+é mais completo, permitindo um melhor controle sobre os Volumes.
+
+-> Outro ponto importante é que usando Volumes do Docker nós não precisamos passar o 
+caminho de uma pasta da nossa maquina. 
+
+-> Varios containers podem usar o mesmo Volume ao mesmo tempo.
+
+1. Digite o seguinte comando para ver as funcionalidades dos Volumes no docker:
+-> docker volume
+
+2. Os Volumes do docker tem Driver e Name. O Name do Volume podemos dar livremente. Nesse
+curso só veremos o Driver do tipo local, porém existe Driver que pode ser usado para 
+gravar os dados de forma remota, ou seja, em outra máquina.
+
+3. Para criar um volume:
+docker volume create nomeDoVolume 
+
+4. Podemos inspecionar nosso volume:
+docker volume inspect nomeDoVolume
+-> Esse comando trás varias informações sobre o Volume, inclusive a pasta onde 
+ficam guardados os Volumes dentro da nossa maquina. 
+-> É importante sabermos onde fica essa pasta pois vai facilitar se quisermos 
+fazer backup de todos nossos volumes e tambem caso nossa maquina esteja ficando 
+lenta, vale a pena olhar essa pasta(pasta dos Volumes Docker) e ver se nela contém 
+volumes desnecessarios/antigos que estão comprometendo a performance ou o espaço da 
+sua maquina. 
+
+5. Para criar um Container usando um Volume:
+-> docker run --name nginx2 -d -p 8081:80 --mount type=volume,source=meuvolume,target=/app nginx
+-> Observe que assim como no "bind mount" continuamos usando o --mount porém agora o type é 
+igual a "volume" e no bind mount é igual a "bind".
+-> O parametro "source" é o nome do Volume.
+-> O parametro "target" é o caminho absoluto da pasta do nosso container, nessa caso 
+escolhemos uma pasta chamada /app, mas poderia ser qualquer outro nome.
+-> Para exemplificar ainda mais podemos criar outro container apontando para o mesmo volume:
+docker run --name nginx3 -d -p 8082:80 --mount type=volume,source=meuvolume,target=/app3 nginx
+OBS1: O valor no campo target poderia ser o mesmo do primeiro, ou seja, /app, mas resolvi fazer com 
+outro nome para mostrar que é possível.
+-> Note que se criarmos um arquivo ou diretorio na pasta /app do primeiro container esse 
+diretorio ou pasta vai aparecer tambem na pasta /app3 do segundo container, e vice versa,
+se criarmos algo na pasta /app3 do segundo container a mesma coisa irá aparecer na pasta 
+/app do primeiro container. 
+OBS2: Os dois containers(ou mais) podem estar rodando ao mesmo tempo, porem nao é 
+obrigatorio. O container que não estiver tambem rodando no momento terá acesso a todos 
+os arquivos colocados no volume. 
+
+6. Tambem podemos criar um Container usando Volume com o comando -v:
+docker run --name nginx4 -d -p 8080:80 -v meuvolume:/app4 nginx
+As mesmas regras do --mount se aplicam para o -v.
+
+

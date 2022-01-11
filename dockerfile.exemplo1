@@ -1,0 +1,7 @@
+# Exemplo da aula: Criando primeira imagem com Dockerfile.
+# Eimagem.txt
+FROM nginx:latest
+
+RUN apt-get update
+
+RUN apt-get install vim -y

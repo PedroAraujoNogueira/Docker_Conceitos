@@ -1,0 +1,39 @@
+1. Imagens
+As imagens ficam guardadas em Registry, podendo ser o Registry da AWS, o Registry da IBM, 
+o Registry oficial do Docker(Docker Hub -> https://hub.docker.com/) e etc.
+
+2. Para vermos as imagens que estão na nossa maquina usamos o comando:
+docker images
+Note que temos o REPOSITORY da image, a TAG da imagem, O ID da imagem, SIZE da imagem e 
+quando ela foi criada(CREATED da imagem.) A TAG da imagem é muito importante para 
+identificarmos a versão daquela imagem. O SIZE da imagem também é muito importante
+pois precisamos constantemente nos preocupar em deixar nossas imagens do menor tamanho
+possível.
+
+3. Para baixarmos uma imagem do registry para nossa maquina usamos:
+docker pull nomeDaImagem:tag
+Para jogarmos uma imagem da nossa maquina para o registry usamos:
+docker push nomeDaImagem:tag
+Para removermos uma imagem da nossa maquina usamos:
+docker rmi nomeDaImagem:tag
+Para removermos todas as imagem da nossa maquina usamos:
+docker rmi $(docker ps -a -q) -f
+
+4. O Dockerfile é um arquivo onde vai conter a "receita de bolo" para que 
+uma imagem seja criada. Podemos pegar como exemplo o dockerfile.exemplo1, nele
+temos 3 passos que serão executados na ordem em que estão no arquivo. O comando:
+-> docker build -f  dockerfile.exemplo1 -t pedroaraujonogueira/nginx-com-vim:latest .
+vai criar uma imagem seguindo os passos descritos no arquivo dockerfile.exemplo1.
+Uma imagem pode ser criada de duas formas: 
+-> A partir do build de um arquivo Dockerfile. Toda vez que um build de um arquivo Dockerfile 
+é feito é criada uma nova imagem.
+-> Dar um commit em um container que está rodando. Assim será criada uma nova imagem com
+todas as alterações feitas naquela container.
+OBS: Após criarmos uma imagem ela fica disponível localmente na nossa máquina, porém podemos 
+guardar elas em um Registry, podendo ser o Registry da AWS, da IBM, o Registry oficial 
+do Docker(Docker Hub) e etc.
+
+5. Após termos feito o build e consequentemente criado uma nova imagem, podemos rodar um 
+container com essa nossa nova imagem usando o comando já aprendido:
+docker run -it pedroaraujonogueira/nginx-com-vim:latest bash 
+

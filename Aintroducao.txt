@@ -1,0 +1,78 @@
+1. O que é o Docker?
+
+O Docker é um framework de containerização que nos permite criar e administar ambientes 
+isolados(containers) de forma rápida e controlada. O Docker nos permite ter portabilidade, 
+ou seja, com o Docker não teremos aquela velha frase: no meu pc funciona, pois os Containers Docker 
+empacotam componentes de software(MySQL, nginx, php, Redis e etc) em um sistema de arquivos
+completo, que contêm tudo necessário para a execução: código, runtime, ferramentas de
+sistema e qualquer coisa que possa ser instalada em um servidor. Isto garante que o software 
+sempre irá executar da mesma forma, independente do seu ambiente. 
+
+O Docker também é muito mais rápido do que uma máquina virtual, pois não roda em cima de 
+sistemas de virtualização, ao invés disso usa o próprio kernel do sistema operacional para 
+isolar a execução de processos, e ainda pode compartilhar bibliotecas. Alguns isolamentos possíveis:
+• Limites de uso de memória
+• Limites de uso de CPU
+• Limites de uso de I/O
+• Limites de uso de rede
+• Isolamento da rede (que redes e portas são acessíveis)
+• Isolamento do file system
+• Permissões e Políticas
+• Capacidades do kernel
+
+2. O que são containers?
+
+Container é um ambiente(processo) isolado de outros processos(containers), os processos são isolados 
+pelo Namespace(O Namespace é o resposável por isolar os processos). O container é uma instancia de 
+uma imagem. 
+Por exemplo: supondo que nossa imagem é o PostgresSql, então podemos ter 3 containers(nesse caso 
+representando 3 banco de dados) rodando com a mesma imagem, ou seja, 3 banco de dados Postgress 
+dentro do nosso ambiente rodando com a imagem do postgress, onde cada um estará isolado do outro.
+Em termos práticos os Containers são File Systems, criados a partir de uma "imagem" e que podem possuir
+também algumas características próprias.
+
+2.1 Como funcionam os Containers?
+Os containers tem 3 pontos principais:
+- Namespaces = isola os processos, ou seja, isola os containers.
+- Cgroups = Controla os recursos computacionais do container. 
+- FileSystem = OFS(Overlay File System), a grande idéia do OFS é podermos trabalhar com 
+camadas/layers. Como as camadas/layers são imagens intermediárias, se você fizer uma alteração 
+no Dockerfile, a janela de encaixe criará apenas a camada que 
+foi alterada e as seguintes. Isso é chamado de cache de camada. Entender o cache de camada 
+é útil quando estamos atualizando uma imagem, pois a nova imagem é gerada aproveitando
+todas as camadas da imagem anterior que estão antes da camada alterada na nova imagem.
+Entender sobre as camadas/layers nos permite gerar imagens mais leves e que são construídas
+mais rápidas.
+- Os Containers do Docker também são muito mais rápidos do que uma máquina virtual, 
+pois não rodam em cima de sistemas de virtualização, ao invés disso usam o próprio kernel 
+do sistema operacional e as bibliotecas do sistema operacional para poder rodar.
+
+3. O que são imagens Docker ?
+Uma imagem Docker é a materialização de um modelo de um sistema de arquivos, modelo este
+produzido através de um processo chamado build. Também podemos dizer que uma imagem é um
+template(modelo) criado por um conjunto de camadas e a partir da execução de uma 
+imagem(docker run) é gerado um container. 
+As imagens podem ser armazenadas em um repositório, parecido como acontece com o github.
+O Docker Hub é o repositório principal do Docker.
+Uma imagem é imutável, ou seja, para alterarmos algo em uma imagem temos que criar outra imagem.
+Até conseguimos modificar algo dentro de um container porém quando matamos o container as 
+modificaçoes morrem junto com o container e então quando criamos outro container ele não terá
+as modificações que fizemos no container que matamos, pois os containers são feitos baseados 
+em uma imagem e uma imagem é imutável.  
+Uma imagem pode ser criada de duas formas: 
+-> A partir do build de um arquivo Dockerfile. Toda vez que um build de um arquivo Dockerfile 
+é feito é criada uma nova imagem.
+-> Dar um commit em um container que está rodando. Assim será criada uma nova imagem com
+todas as alterações feitas naquela container.
+As imagens ficam guardadas em Registry, podendo ser o Regustry da AWS, da IBM, o Registry oficial 
+do Docker(Docker Hub) e etc.
+
+4. Dockerfile
+O dockerfile é uma das formas de criarmos imagens Docker. O dockerfile é um arquivo declarativo
+onde escrevemos como vai ser a imagem que vamos construir.
+FROM: ImageName -> O FROM vai baixar a imagem e as dependencias dessa imagem.
+A imagem pode ser criada a partir do build de um arquivo Dockerfile. Toda vez que um build 
+de um arquivo Dockerfile é feito é criada uma nova imagem.
+
+
+

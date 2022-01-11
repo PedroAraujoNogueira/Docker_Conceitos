@@ -1,0 +1,63 @@
+Comandos: 
+
+1. docker ps, esse comando vai mostrar quais containers estão rodando(ativos) na máquina.
+1.1. docker ps -a, esse comando vai mostrar todos os containers, tanto os containers que 
+estão rodando(ativos) na máquina quanto os que não estão rodando.
+
+2. docker run hello-world, esse comando irá baixar, do container registre, a imagem 
+hello-world(na sua versão mais recente) para sua máquina, pois quando não especificamos 
+a versão da imagem o docker baixa a versão latest. E após baixar a imagem irá rodar um 
+container com base nessa imagem.
+OBS: Quando vamos executar um container o docker vai procurar a imagem, nesse caso o hello-world, 
+primeira na nossa máquina e caso não ache então o docker vai procurar essa imagem no 
+docker Hub.
+Para sabermos o nome da imagem oficial de um serviço que queremos rodar podemos acessar 
+o https://hub.docker.com/
+O Docker Hub é o repositório principal do Docker.
+
+3. docker run -it ubuntu:latest bash
+3.1. docker run -> executa algo. 
+3.2. -it -> parâmetros que podemos passar, uma lista completa dos parâmetros pode ser
+vista nesse link https://docs.docker.com/engine/reference/commandline/run/ ou usando 
+o comando: "docker run --help". Os parâmetros devem ser passados sempre depois do 
+"docker run". Nesse caso o -i significa que está em modo interativo e mantém o 
+STDIN(entrada padrão ou terminal) ativo para conseguirmos "interagir" com a máquina e o -t 
+permite digitar no terminal. Outro parâmetro importante é o --rm que significa que após 
+um container morrer ele vai ser removido.  
+3.3. ubuntu:latest -> antes dos dois pontos é o nome da imagem e após os dois pontos
+é a tag da imagem. Se não colocarmos uma tag então ele assume como sendo latest.
+3.4. bash -> comando que vai ser executado no container depois que o container rodar. 
+Nesse caso estamos executando o bash(terminal), então entraremos no terminal do container.
+No caso, o bash que está mantendo o processo(container) rodando, porém se não houver 
+nada que mantenha o processo(container) rodando, então ele morre automáticamente.
+
+4. docker start nomeDoContainer
+4.1. docker stop nomeDoContainer
+4.2. docker rm nomeDoContainer
+4.3. Para removermos todos os containers de uma vez:
+docker rm $(docker ps -a -q) -f
+
+5. docker run -p 8080:80 nginx
+Para publicarmos a porta do container para nosso host usamos a flag -p. Ou seja, com a 
+flag -p nos estamos expondo a porta do container para a maquina host.
+
+6. A execução de um container com nginx "trava" o terminal. Para evitarmos isso podemos 
+executar o container com a flag -d(detach):
+docker run -d nginx
+
+7. docker run --name nomeNginx nginx 
+Esse comando vai dar um nome para o container.
+
+8. docker exec nomeDoContainer ls
+O docker exec vai executar um comando em um container que já esteja rodando.
+Outro exemplo: 
+docker exec -it nomeDoContainer bash 
+Com esse comando estamos executando o bash do container e como estamos usando o -it entao 
+podemos escrever no bash(terminal) do container. Podemos inclusive alterar o HTML padrao 
+do nginx. Para isso navegamos ate a pasta do html /usr/share/nginx/html, instalamos o vim
+e entramos no arquivo HTML com os seguintes comandos:
+apt-get update
+apt-get install vim
+vim index.html  
+OBS: fazendo as modificações dessa forma, todas as alterações feitas no container morrerão 
+quando o container morrer.
