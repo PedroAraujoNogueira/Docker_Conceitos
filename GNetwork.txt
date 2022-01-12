@@ -1,0 +1,19 @@
+1. O docker possui uma rede interna rodando dentro dele. Essa network serve 
+para algumas coisas, dentre elas, fazer um container se comunicar com o outro.
+
+2. O Docker possui dentro dele alguns tipos diferentes de network, que são:
+2.1. NETWORK BRIDGE, é o tipo de rede mais comum de ser utilizado, ele é o tipo 
+padrão na construção de uma NETWORK. Ela normalmente é usada para fazer com 
+que um container se comunique facilmente com outro.
+2.2. NETWORK HOST, Esse tipo de rede mescla a rede do docker com a rede 
+da sua maquina(host), ou seja, os nossos containers que fizerem parte dessa 
+rede estarão tambem participando da mesma rede da nossa máquina. Logo um 
+container que estiver nessa rede conseguirá ser acessado pela máquina sem 
+termos que fazer aquela exposição de porta com a flag -p.
+2.3. NETWORK OVERLAY, usado para comunicar vários Dockers que estão em 
+máquinas diferentes, parecendo como se eles estivessem na mesma rede. Um caso
+de uso para para esse tipo de rede é caso estejamos usando o Docker Swarm.
+OBS: O Docker swarm é uma ferramenta de orquestração de contêineres , o que 
+significa que permite ao usuário gerenciar vários contêineres implantados em 
+várias máquinas host. Faz um papel parecido com o Kubernetes. 
+ 

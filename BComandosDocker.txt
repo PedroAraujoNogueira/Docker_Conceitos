@@ -61,3 +61,10 @@ apt-get install vim
 vim index.html  
 OBS: fazendo as modificações dessa forma, todas as alterações feitas no container morrerão 
 quando o container morrer.
+
+9. docker build -f  dockerfile.exemplo1 -t pedroaraujonogueira/nginx-com-vim:latest .
+Esse comando vai criar uma imagem seguindo os passos descritos no 
+arquivo dockerfile.exemplo1.
+
+10. docker push pedroaraujonogueira/nginx-com-vim:latest 
+Esse comando vai jogar sua imagem para o seu repositório.
