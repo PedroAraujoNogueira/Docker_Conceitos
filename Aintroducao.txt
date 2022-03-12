@@ -28,8 +28,8 @@ uma imagem.
 Por exemplo: supondo que nossa imagem é o PostgresSql, então podemos ter 3 containers(nesse caso 
 representando 3 banco de dados) rodando com a mesma imagem, ou seja, 3 banco de dados Postgress 
 dentro do nosso ambiente rodando com a imagem do postgress, onde cada um estará isolado do outro.
-Em termos práticos os Containers são File Systems, criados a partir de uma "imagem" e que podem possuir
-também algumas características próprias.
+Em termos práticos os Containers são File Systems, criados a partir de uma "imagem" e que podem 
+possuir também algumas características próprias.
 
 2.1 Como funcionam os Containers?
 Os containers tem 3 pontos principais:

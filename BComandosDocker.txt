@@ -9,7 +9,7 @@ hello-world(na sua versão mais recente) para sua máquina, pois quando não esp
 a versão da imagem o docker baixa a versão latest. E após baixar a imagem irá rodar um 
 container com base nessa imagem.
 OBS: Quando vamos executar um container o docker vai procurar a imagem, nesse caso o hello-world, 
-primeira na nossa máquina e caso não ache então o docker vai procurar essa imagem no 
+primeiro na nossa máquina e, caso não ache, o docker vai procurar essa imagem no 
 docker Hub.
 Para sabermos o nome da imagem oficial de um serviço que queremos rodar podemos acessar 
 o https://hub.docker.com/

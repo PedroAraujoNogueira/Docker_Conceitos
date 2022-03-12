@@ -42,7 +42,7 @@ diretorio ou pasta vai aparecer tambem na pasta /app3 do segundo container, e vi
 se criarmos algo na pasta /app3 do segundo container a mesma coisa irá aparecer na pasta 
 /app do primeiro container. 
 OBS2: Os dois containers(ou mais) podem estar rodando ao mesmo tempo, porem nao é 
-obrigatorio. O container que não estiver tambem rodando no momento terá acesso a todos 
+obrigatorio. O container que não estiver rodando no momento terá acesso a todos 
 os arquivos colocados no volume. 
 
 6. Tambem podemos criar um Container usando Volume com o comando -v:
