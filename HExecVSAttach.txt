@@ -1,0 +1,56 @@
+DOCKER EXEC Vs DOCKER ATTACH:
+
+ATTACH:
+
+O comando docker attach permite anexar(attach) a um contêiner em execução usando o ID 
+ou o nome do contêiner, seja para visualizar sua saída contínua ou para controlá-la 
+interativamente. 
+ex: docker attach ubuntu1 
+
+O comando docker attach é para anexar ao processo existente. O problema do docker attach é que 
+uma vez que sairmos do comando também estaremos parando o container. Ou seja, quando sairmos
+do comando attach o nosso container não estará mais em execução, logo não aparecerá no comando
+"docker ps", mas aparecerá no comando "docker ps -a".
+
+Se usarmos o docker attach, podemos usar apenas uma instância do shell. Portanto, se quisermos
+abrir um novo terminal com uma nova instância do shell do contêiner, basta executar o docker 
+exec.
+
+Se o contêiner docker foi iniciado usando o comando /bin/bash, você pode acessá-lo usando attach,
+caso contrário, você precisa executar o comando para criar uma instância bash dentro do contêiner
+usando exec. Attach não é para executar algo extra em um contêiner, é para anexar ao 
+processo em execução.
+
+Para parar um contêiner, use CTRL-c. Essa sequência de teclas envia SIGKILL para o contêiner.
+Se –sig-proxy for true (o padrão), CTRL-c enviará um SIGINT para o contêiner. Você pode desanexar 
+de um contêiner e deixá-lo em execução usando a sequência de teclas CTRL-p CTRL-q.
+
+O comando "docker Attach" tem um propósito específico de literalmente anexar(attach) você 
+ao processo iniciado pelo Docker. Dependendo de qual é o processo, o comportamento pode ser 
+diferente, por exemplo, anexar a /bin/bashfornecerá um shell, mas anexar ao redis-server será 
+como se você tivesse acabado de iniciar o redis diretamente sem daemonizar.
+
+EXEC
+
+O comando “docker exec” é especificamente para executar coisas novas em um contêiner já 
+iniciado, seja um shell ou algum outro processo. O comando docker exec executa um novo comando
+em um contêiner em execução.
+
+O comando iniciado usando docker exec só é executado enquanto o processo primário do 
+contêiner (PID 1) está em execução e não é reiniciado se o contêiner for reiniciado.
+
+Assim como o Attach, o comando exec funciona apenas no contêiner já em execução. Se o 
+contêiner estiver parado no momento, você precisa primeiro executá-lo. Então agora você 
+pode executar qualquer comando no container em execução apenas conhecendo seu ID (ou nome):
+Exemplo: docker exec <container_id_or_name> echo “Olá do contêiner!”
+
+
+RESUMO:
+
+O comando "docker Attach" não é para executar algo extra em um contêiner, é para anexar ao 
+processo em execução. O comando "docker exec" é especificamente para executar coisas novas 
+em um contêiner já iniciado, seja um shell ou algum outro processo.
+
+Ambos são usados ​​para explorar o container em execução, mas se você quiser fazer isso em
+mais de uma instância do shell ou sem sair do container em execução ao sair do comando, 
+use "docker exec".

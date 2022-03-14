@@ -1,5 +1,6 @@
-1. O docker possui uma rede interna rodando dentro dele. Essa network serve 
-para algumas coisas, dentre elas, fazer um container se comunicar com o outro.
+1. O docker possui um mecanismo de network, ou seja, uma rede interna rodando dentro 
+dele. Essa network serve para algumas coisas, dentre elas, fazer um container se comunicar 
+com o outro.
 
 2. O Docker possui dentro dele alguns tipos diferentes de network, que são:
 2.1. NETWORK BRIDGE, é o tipo de rede mais comum de ser utilizado, ele é o tipo 
@@ -7,13 +8,44 @@ padrão na construção de uma NETWORK. Ela normalmente é usada para fazer com
 que um container se comunique facilmente com outro.
 2.2. NETWORK HOST, Esse tipo de rede mescla a rede do docker com a rede 
 da sua maquina(host), ou seja, os nossos containers que fizerem parte dessa 
-rede estarão tambem participando da mesma rede da nossa máquina. Logo um 
+rede estarão também participando da mesma rede da nossa máquina. Logo um 
 container que estiver nessa rede conseguirá ser acessado pela máquina sem 
-termos que fazer aquela exposição de porta com a flag -p.
+termos que fazer aquela exposição de porta com a flag -p e vice-cersa, 
+ou seja, o container também conseguirá acessar a máquina host.
 2.3. NETWORK OVERLAY, usado para comunicar vários Dockers que estão em 
 máquinas diferentes, parecendo como se eles estivessem na mesma rede. Um caso
 de uso para para esse tipo de rede é caso estejamos usando o Docker Swarm.
 OBS: O Docker swarm é uma ferramenta de orquestração de contêineres , o que 
 significa que permite ao usuário gerenciar vários contêineres implantados em 
 várias máquinas host. Faz um papel parecido com o Kubernetes. 
- 
+2.4. NONE, nesse caso o container não participará de nenhuma rede e estará
+rodando de forma 100% isolada.
+
+COMANDOS NETWORD:
+
+1. docker network ls, esse comando vai listar todas nossas redes. Cada rede
+contém um ID, um Name(que podemos escolher), o DRIVER(que é um dos tipos de 
+networks listadas acima, se não escolhermos nenhuma a padrão será a BRIDGE) 
+e SCOPE que é o ambiente que estamos rodando.
+2. docker network prune, esse comando vai deletar todas nossas networks(redes) 
+e deixar apenas as networks padrões. 
+3. docker network inspect nomeDaRede, esse comando vai inspecionar a rede, ou 
+seja, vai mostrar todos os containers presente naquele rede e outras 
+características da rede.
+
+EXEMPLO DE USO DAS REDES:
+
+Passos:
+
+1. docker run -d -it --name ubuntu1 bash 
+2. docker run -d -it --name ubuntu2 bash 
+3. docker network inspect bridge, anote os IPs dos containers.
+4. docker attach ubuntu1
+5. ip addr show -> para vermos o IP desse container.
+6. ping ipDoUbuntu2 -> note que o ubuntu1 consegue pingar no nosso outro container, 
+ou seja, os dois estão na mesma rede.
+7. ping ubuntu2 -> note que nesse caso o ubuntu1 não consegue pingar no ubuntu2, pois não
+está fazendo uma resolução de nome. Esse é um comportamento ocasionado por estarmos usando
+a network bridge padrão do docker. 
+8. Pare os dois containers(docker stop ubuntu1 ubuntu2) e remova eles(docker rm ubuntu1 ubuntu2).
+9. docker network create --driver bridge minharede.

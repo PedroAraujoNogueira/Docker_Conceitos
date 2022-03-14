@@ -24,7 +24,7 @@ A instrução CMD tem três formas:
 CMD ["executable","param1","param2"]( formulário exec , este é o formulário preferido)
 CMD ["param1","param2"](como parâmetros padrão para ENTRYPOINT )
 CMD command param1 param2( forma de concha )
-Só pode haver uma instrução CMD em a Dockerfile. Se você listar mais de um CMD, 
+Só pode haver uma instrução CMD em um Dockerfile. Se você listar mais de um CMD, 
 apenas o último CMD terá efeito.
 O comando e os parâmetros dentro do CMD podem mudar.
 
@@ -45,5 +45,4 @@ todos os elementos em um formulário exec ENTRYPOINT e substituirão todos os el
 especificados usando CMD.
 -> Quando tem o comando Entrypoint o comando CMD, se houver, só pode aparecer após o 
 ENTRYPOINT. O CMD acaba sendo um paramêtro de um ENTRYPOINT.
-
 OBS: olhar como exemplo o dockerfile.exemplo3

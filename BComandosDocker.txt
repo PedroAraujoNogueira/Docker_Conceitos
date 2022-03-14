@@ -39,10 +39,12 @@ docker rm $(docker ps -a -q) -f
 
 5. docker run -p 8080:80 nginx
 Para publicarmos a porta do container para nosso host usamos a flag -p. Ou seja, com a 
-flag -p nos estamos expondo a porta do container para a maquina host.
+flag -p nos estamos expondo a porta do container para a maquina host na seguinte ordem:
+PortaDaNossaMaquina:PortaDoContainer
 
-6. A execução de um container com nginx "trava" o terminal. Para evitarmos isso podemos 
-executar o container com a flag -d(detach):
+6. A execução de um container com nginx "trava" o terminal. Para evitarmos isso e 
+fazermos o processo rodar em segundo plano podemos executar o container com a
+flag -d(detach):
 docker run -d nginx
 
 7. docker run --name nomeNginx nginx 
@@ -68,3 +70,4 @@ arquivo dockerfile.exemplo1.
 
 10. docker push pedroaraujonogueira/nginx-com-vim:latest 
 Esse comando vai jogar sua imagem para o seu repositório.
+Faça um teste com o dockerfile.exemplo4

@@ -24,7 +24,8 @@ uma imagem seja criada. Podemos pegar como exemplo o dockerfile.exemplo1, nele
 temos 3 passos que serão executados na ordem em que estão no arquivo. O comando:
 -> docker build -f  dockerfile.exemplo1 -t pedroaraujonogueira/nginx-com-vim:latest .
 vai criar uma imagem seguindo os passos descritos no arquivo dockerfile.exemplo1.
-Uma imagem pode ser criada de duas formas: 
+
+5. Uma imagem pode ser criada de duas formas: 
 -> A partir do build de um arquivo Dockerfile. Toda vez que um build de um arquivo Dockerfile 
 é feito é criada uma nova imagem.
 -> Dar um commit em um container que está rodando. Assim será criada uma nova imagem com
@@ -33,7 +34,7 @@ OBS: Após criarmos uma imagem ela fica disponível localmente na nossa máquina
 guardar elas em um Registry, podendo ser o Registry da AWS, da IBM, o Registry oficial 
 do Docker(Docker Hub) e etc.
 
-5. Após termos feito o build e consequentemente criado uma nova imagem, podemos rodar um 
+6. Após termos feito o build e consequentemente criado uma nova imagem, podemos rodar um 
 container com essa nossa nova imagem usando o comando já aprendido:
 docker run -it pedroaraujonogueira/nginx-com-vim:latest bash 
 
