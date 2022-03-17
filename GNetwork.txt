@@ -32,8 +32,10 @@ e deixar apenas as networks padrões.
 3. docker network inspect nomeDaRede, esse comando vai inspecionar a rede, ou 
 seja, vai mostrar todos os containers presente naquele rede e outras 
 características da rede.
+4. docker network connect nomeDaRede nomeDoContainer, esse comando vai connectar
+um container em uma rede.
 
-EXEMPLO DE USO DAS REDES:
+EXEMPLO DE USO DA REDE BRIDGE:
 
 Passos:
 
@@ -48,4 +50,57 @@ ou seja, os dois estão na mesma rede.
 está fazendo uma resolução de nome. Esse é um comportamento ocasionado por estarmos usando
 a network bridge padrão do docker. 
 8. Pare os dois containers(docker stop ubuntu1 ubuntu2) e remova eles(docker rm ubuntu1 ubuntu2).
-9. docker network create --driver bridge minharede.
+9. docker network create --driver bridge minharede -> para criar nossa própria rede.
+10. docker run -dit --name ubuntu1 --network minharede bash -> cria um container que estará 
+dentro da nossa rede.
+docker run -dit --name ubuntu2 --network minharede bash -> cria um 
+container que estará dentro da nossa rede.
+11. docker exec -it ubuntu1 bash -> para entrar no bash.
+12. ping ubuntu2 -> digite esse comando no bash do ubuntu1. Note que o ubuntu1 consegue 
+pingar no nosso outro container, ou seja, os dois estão na mesma rede. Dessa vez funcionou
+pingar para outro container mesmo colocando o nome do outro container no ping ao invés de 
+um IP, pois criamos nossa propria rede bridge ao invés de usarmos a rede bridge padrão do 
+docker.
+13. docker run -dit --name ubuntu3 bash -> criamos um novo container e esse container estará
+na rede padrão do docker.
+14. docker exec -it ubuntu3 bash
+15. ping ipDoUbuntu2 ou ping ubuntu1 -> note que não vamos conseguir nos conectar com esses 
+outros dois containers, pois eles estão em uma rede diferente.
+16. docker network connect minharede ubuntu3 -> Esse comando vai connectar o nosso container 
+ubuntu3 na rede minharede.
+17. docker exec -it ubuntu3 bash
+18. ping ubuntu2 -> note que agora iremos conseguir pingar no ubuntu2, pois agora estamos na
+mesma rede.
+19. docker network inspect minharede -> note que conseguimos ver que os 3 containers estão 
+nessa rede.
+
+EXEMPLO DE USO DA REDE HOST:
+
+OBS: Não conseguimos usar esse tipo de rede no MacBook, nem no windows(exceto o WLS2), pois
+tanto o MacBook quanto o windows criam máquinas virtuais para rodar o docker, ou seja, nosso 
+docker host é uma máquina virtual e não nossa própria máquina, então quando criarmos uma
+network do tipo HOST essa rede vai mesclar a rede do docker com a rede da nossa máquina 
+virtual(host) e não com a rede da máquina e por isso que esse tipo de rede não funciona no
+MacBook nem no windows(exceto o WLS2 que é realmente uma máquina linux).
+
+Passos: 
+
+1. docker run -d --rm --name nginx --network host nginx -> vai criar um container com nginx 
+e com a rede do container mesclada com a rede da nossa máquina.
+2. Acessar localhost:80 no navegador -> note que veremos a página html padrão do nginx mesmo
+sem termos feito o redirecionamento de portas com a flag -p.
+
+EXEMPLO DE UM CONTAINER ACESSANDO ALGUMA PORTA/RECURSO DA MÁQUINA HOST:
+
+Passos:
+
+1. docker run --rm -it --name ubuntu4 ubuntu bash
+2. apt-get update e apt-get install curl -y
+3. Dentro do bash do ubuntu4 rode o comando curl http://host.docker.internal:8000 ->  Se 
+tivermos algum servidor rodando na porta 8000 nós conseguiriamos nos comunicar com ele partindo
+de um container do docker.
+host.docker.internal -> com esse comando conseguimos acessar nossa máquina a partir de um 
+container.
+
+OBS: esse exemplo foi importante para sabermos que um container tmb pode acessar outra aplicação 
+que esteja fora do Docker(na máquina host).

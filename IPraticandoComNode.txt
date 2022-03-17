@@ -1,0 +1,71 @@
+INSTALANDO UM FRAMEWORK EM UM CONTAINER:
+
+Para instalar o node em um container e rodar uma aplicação JS podemos fazer os 
+passos mostrados no dockerfile dentro da pasta node_server.
+
+Para gerar uma imagem com esse dockerfile entre na pasta node_server e dê um build:
+docker build -t pedroaraujonogueira/node-server:dev_16032022 .
+
+Para ver rodando digite o comando:
+docker run --rm -d -p 3000:3000 --name nodeserver pedroaraujonogueira/node-server:dev_16032022
+e abra no navegador localhost:3000
+E se quiser entrar no container no qual tem essa aplicação digite:
+docker exec -it nodeserver bash
+Note que voce ja estará dentro da pasta /usr/src/application e veja que dentro dessa pasta 
+terá nosso index.js, a pasta node_modules e os arquivos package.json e package-lock.json.
+
+OBS: Importante ver que o comando CMD dentro do dockerfile tem "index.js". Isso foi feito
+pois o CMD pode ser alterado no momento do "docker run" deixando mais flexivel o start da 
+aplicação. 
+
+OBS2: Os comandos contidos no dockerfile poderiam ter sido feitos manualmente:
+passo1: docker run -it --name node-server-teste node:15 bash
+passo2: apt-get update  
+passo3: npm init -y  
+passo4: npm i express --save
+passo5: copiar o arquivo index.js para dentro do container(não sei como fazer
+sem ser usando dockerfile)
+passo6: rodar o comando "node index.js"
+
+OBS3: Da forma como fizemos acima nós montamos uma imagem com nossa aplicação NodeJs. 
+Porém veremos a seguir como usar o Node no Docker de forma mais dinâmica, como seria 
+em um ambiente de desenvolvimento.
+
+DESENVOLVER USANDO O NODE NO DOCKER:
+
+Vamos desenvolver uma aplicação node porém o node não estará instalado na nossa 
+máquina e sim em um container docker.
+Para isso teremos que compartilhar a pasta do nosso computador onde estará o código 
+javascript com o container que estará rodando uma imagem Node. Dessa forma vamos 
+conseguir alterar o código no nosso computador e ver o resultado no container.
+
+passo1: docker run --rm -it -v $(pwd)/:/usr/src/application -p 3000:3000 node:15 bash
+OBS: O $(pwd) serve para pegar o caminho completo da nossa maquina até a pasta
+atual. Esse é um comando do linux. 
+passo2: cd usr/src/application/
+passo3: npm init -y
+passo4: npm install express --save
+Note que mesmo rodando os comandos acima dentro do container as pastas e arquivos são criados
+tanto no container como na pasta da nossa máquina.
+passo5: Crie um arquivo na sua maquina, dentro da pasta node, chamado index.js e faça uma pequena
+aplicação com express.
+passo6: digite "node index.js" dentro do seu container na pasta /usr/src/application e 
+veja que o serviço foi iniciado. Em um navegador poderemos ver o resultado buscando por
+localhost:3000.
+
+GERANDO DOCKERFILE E IMAGEM DA APLICAÇÃO QUE FIZEMOS USANDO UMA IMAGEM NODE NO DOCKER:
+
+Observe o arquivo dockerfile dentro da pasta Node.
+
+OBS: O EXPOSE 3000 serve para que outros container possam acessar esse container através 
+dessa porta.
+passo1: docker build -t pedroaraujonogueira/hello-express:dev .
+passo2: docker run --rm -p 3000:3000 pedroaraujonogueira/hello-express:dev
+passo3: docker push pedroaraujonogueira/hello-express:dev
+
+OBS: quando vamos gerar um build da nossa aplicação precisamos copiar tudo da nossa aplicação
+para dentro da imagem.
+OBS2: uma coisa bastante comum de acontecer é termos dois arquivos dockerfile, um para montarmos 
+nosso ambiente de desenvolvimento e outro para prod. No arquivo de prod fazemos um COPY de tudo 
+da nossa aplicação para dentro da imagem e em Dev usamos o RUN para instalar tudo que for 
+preciso como em dockerfile.dev.
