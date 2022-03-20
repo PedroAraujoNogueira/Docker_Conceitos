@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+
+  laravel:
+    image: pedroaraujonogueira/laravel:prod
+    container_name: teste-laravel
+    networks:
+     - laranet
+    
+  nginx: 
+    image: pedroaraujonogueira/nginx-fullcycle
+    container_name: teste-nginx
+    networks:
+      - laranet
+    ports: 
+      - "8080:80" 
+
+networks:
+  laranet: 
+    driver: bridge 

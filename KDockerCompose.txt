@@ -1,0 +1,3 @@
+O docker-compose é uma ferramenta complementar ao docker que se baseia em um arquivo 
+yaml para automatizar scripts do docker, resumindo o docker-compose sobe de forma 
+automática todos os containers/serviços que queremos com apenas um comando.

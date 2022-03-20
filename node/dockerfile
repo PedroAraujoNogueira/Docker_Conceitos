@@ -1,9 +1,7 @@
 FROM node:15
 
-WORKDIR /usr/src/application
+WORkDIR /usr/src/application
 
-COPY . .
-
-EXPOSE 3000
-
-CMD [ "node", "index.js" ]
+RUN apt-get update && \ 
+    npm init -y && \ 
+    npm i express --save

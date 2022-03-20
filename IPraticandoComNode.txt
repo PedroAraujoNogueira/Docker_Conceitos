@@ -55,17 +55,17 @@ localhost:3000.
 
 GERANDO DOCKERFILE E IMAGEM DA APLICAÇÃO QUE FIZEMOS USANDO UMA IMAGEM NODE NO DOCKER:
 
-Observe o arquivo dockerfile dentro da pasta Node.
+Observe o arquivo dockerfile.prod dentro da pasta Node.
 
 OBS: O EXPOSE 3000 serve para que outros container possam acessar esse container através 
 dessa porta.
-passo1: docker build -t pedroaraujonogueira/hello-express:dev .
-passo2: docker run --rm -p 3000:3000 pedroaraujonogueira/hello-express:dev
-passo3: docker push pedroaraujonogueira/hello-express:dev
+passo1: docker build -t pedroaraujonogueira/hello-express:prod -f dockerfile.prod .
+passo2: docker run --rm -p 3000:3000 pedroaraujonogueira/hello-express:prod
+passo3: docker push pedroaraujonogueira/hello-express:prod
 
 OBS: quando vamos gerar um build da nossa aplicação precisamos copiar tudo da nossa aplicação
 para dentro da imagem.
 OBS2: uma coisa bastante comum de acontecer é termos dois arquivos dockerfile, um para montarmos 
 nosso ambiente de desenvolvimento e outro para prod. No arquivo de prod fazemos um COPY de tudo 
 da nossa aplicação para dentro da imagem e em Dev usamos o RUN para instalar tudo que for 
-preciso como em dockerfile.dev.
+preciso como em dockerfile dentro da pasta node.

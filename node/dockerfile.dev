@@ -1,7 +1,0 @@
-FROM node:15
-
-WORkDIR /usr/src/application
-
-RUN apt-get update && \ 
-    npm init -y && \ 
-    npm i express --save

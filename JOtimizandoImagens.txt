@@ -1,0 +1,44 @@
+OTIMIZAÇÃO DE IMAGENS E MULTI STAGE BUILDING
+
+A otimização de imagens é muito importante em ambiente de produção pois fica mais 
+rápido subir e descer a imagem e também quanto menor a imagem maior a segurança pois
+teremos menos recursos dentro dessa imagem capazes de causar brecha de segurança ou
+vulnerabilidades.
+
+Uma imagem muito comum de utilizarmos em produção são imagens baseadas no alpine linux que 
+é um linux bem enxuto/leve.
+
+Então vamos montar uma imagem para produção. Nessa imagem vamos colocar um servidor NGINX que 
+vai funcionar como um servidor de proxy reverso, ou seja, toda requisição vai bater no NGINX
+antes de chegar na nossa aplicação e a aplicação vai devolver a mensagem para o NGINX que vai 
+devolver a resposta para o cliente. 
+
+Vamos utilizar também a interface FastCGI.
+
+Vamos trabalhar com Multi Stage Build, ou seja, vamos fazer o processo de build da nossa 
+imagem em duas ou mais etapas, onde usaremos a primeira etapa para construir nossa imagem
+e as etapas posteriores usaremos para otimizar a imagem, removendo da nossa imagem tudo
+que não for mais ser útil e escolhendo uma imagem base otimizada.  
+
+Para entendermos melhor o Multi Stage Build vamos olhar o arquivo ./laravel/dockerfile.prod.
+Observe que no primeiro FROM temos também um AS que funciona como uma apelido para aquele 
+estágio. Observe também que no segundo STAGE2 no comando COPY usamos da seguinte forma: 
+COPY --from=builder /var/www/laravel .
+--from=builder -> builder é o apelido que demos para o primeiro estágio(STAGE1)
+/var/www/laravel -> Está é a pasta do STAGE1 que queremos copiar.
+. ->  Este '.' significa a pasta do STAGE2 que irá receber as informações copiadas do 
+STAGE1. Nesse caso vai ser a /var/www que foi a pasta definida no WORKDIR.
+
+Faça o build dessa imagem e veja o resultado do tamanha dessa image. Você vai notar que 
+essa imagem tem um tamanho muito menor do que a imagem construída com o dockerfile
+./laravel/dockerfile
+
+
+NGINX COMO PROXY REVERSO
+
+O nginx possui um arquivo chamado nginx.conf onde podemos configurar nossos domínios
+que vamos utilizar.
+
+
+
+
