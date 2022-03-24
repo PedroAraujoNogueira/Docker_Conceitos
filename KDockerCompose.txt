@@ -75,3 +75,9 @@ container morrer não perderemos nenhum dado pois está tudo replicado nessa pas
 NODE E MYSQL COM DOCKER-COMPOSE
 
 Após subir o container com docker-compose -f docker-compose.node.yaml up -d --build
+aplique os seguintes comandos:
+
+1. docker exec -it node-mysql bash -> para entrar no bash(terminal) do container.
+2. npm i para instalar as dependencias.
+3. node index.js para rodar a aplicação.
+4. Coloque no navegador localhost:3000 e veja a mensagem da aplicação.

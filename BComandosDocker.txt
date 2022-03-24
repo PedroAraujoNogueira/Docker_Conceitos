@@ -76,3 +76,8 @@ Faça um teste com o dockerfile.exemplo4
 
 12. docker run -e -> com essa flag podemos passar variáveis de ambiente para 
 nosso container.
+
+13. docker cp <containerId>:/file/path/within/container /host/path/target ->
+Copia os arquivo do host para o container ou do container para o host. No 
+caso do comando acima está copiando do container para o host, pois o container
+está logo após o comando cp.

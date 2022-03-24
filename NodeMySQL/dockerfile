@@ -2,8 +2,4 @@ FROM node:15
 
 WORKDIR /usr/src/application
 
-RUN apt-get update && \ 
-    npm init -y && \ 
-    npm install express --save
-
 EXPOSE 3000
