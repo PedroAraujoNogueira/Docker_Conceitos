@@ -1,3 +1,77 @@
+INICIANDO COM DOCKER COMPOSE
+
 O docker-compose é uma ferramenta complementar ao docker que se baseia em um arquivo 
-yaml para automatizar scripts do docker, resumindo o docker-compose sobe de forma 
+yaml para automatizar scripts do docker, resumindo, o docker-compose sobe de forma 
 automática todos os containers/serviços que queremos com apenas um comando.
+
+Para trabalharmos com o docker-compose devemos criar um arquivo chamado 
+docker-compose.yaml. Esse arquivo vai específicar quais serviços queremos subir 
+utilizando o docker compose.
+
+Olhe o arquivo docker-compose.laravel.yaml criado na raiz dessa pasta.
+Atributos desse arquivo:
+
+1. version: a versão que vamos utilizar.
+
+2. services: é onde vamos definir os serviços que queremos subir e para cada serviço 
+será criado um container.
+2.1. NomeDosServiços: observe que colocamos o nome dos serviços como sendo laravel e
+nginx, porém poderia ser qualquer nome que quisermos, pedro por exemplo.
+2.2. build: vai gerar o build do seu dockerfile, ou seja, vai gerar uma imagem a partir
+de um dockerfile específico.
+2.2.1. context: esse comando diz a pasta onde está nosso dockerfile.
+2.2.2. dockerfile: esse comando diz o nome do nosso arquivo dockerfile.
+2.3. image: nome da imagem que estamos usando. Caso essa imagem ainda não exista temos 
+que colocar o atributo build. Se usarmos o atributo build o atributo image não é obrigatório
+porém o docker compose vai dar um nome estranho para a imagem.
+2.4. container_name: nome do container que vai subir.
+2.5. networks: vão ficar as networks que o container vai fazer parte.  
+2.6. ports: define quais as portas do container que queremos liberar, funciona como a 
+flag -p quando usarmos o docker run. 
+2.7. command: esse comando vai ser o comando que irá depois do nosso entrypoint
+padrão, igual ao CMD do dockerfile.
+2.8. restart: quando tiver o valor always, então o docker irá reiniciar automáticamente
+o container sempre que cair.
+2.9. tty: quando tiver o valor true, então se precisarmos entrar no nosso container e 
+digitar coisas diretamente no container nós iremos poder.
+2.10. volumes: vai compartilhar uma pasta do seu computador com o container, funciona 
+igual ao bind mount.
+2.11. environment: colocamos variáveis de ambiente automaticamente assim que o container 
+sobe. Igual ao "docker run -e" 
+
+3. networks: define as networks que queremos utilizar. Se a network não 
+estiver criada o docker compose vai criar, porém pode ser que crie com um nome diferente
+do esperado como nomeDaPasta_nomeDaRede, no meu caso ficou docker_conceitos_node-network
+pois o nome da pasta onde está o docker-compose é docker_conceitos.
+
+Comandos docker-compose 
+
+1. docker-compose -f docker-compose.laravel.yaml up -> esse comando vai subir todos nossos 
+containers específicados no arquivo docker-compose.yaml.
+2. docker-compose down -> esse comando vai descer todos nossos containers específicados 
+no arquivo docker-compose.yaml..
+3. docker-compose up -d -> vai subir os containers porém sem travar o terminal.
+4. docker-compose ps -> esse comando vai trazer somente os containers do docker-compose
+que estão em executação. Porém esse comando deve ser usado na pasta onde está o arquivo
+docker-compose.yaml
+5. docker-compose up -d --build -> Esse comando é muito útil quando mexemos nos nossos
+arquivos dockerfile, pois o docker-compose não monitora se ouve alguma mudança nos 
+arquivos dockerfile e mantém o cache do ultimo build. Então para fazermos
+ele buildar novamente com o dockerfile atualizado(o dockerfile após nossa alteração) 
+devemos usar a flag --build. 
+
+
+CRIANDO BANCO DE DADOS MYSQL
+
+Vamos criar um container com mysql usando docker-compose, olhe o arquivo 
+docker-compose.node.yaml para isso vamos criar também uma pasta mysql na pasta 
+raiz.
+OBS: no caso do mysql precisamos passar o atributo command com aquele valor para 
+funcionar.
+OBS2: após subir o container com docker-compose -f docker-compose.node.yaml up -d 
+note que a pasta mysql foi preenchida com os arquivos do banco, ou seja, se nosso 
+container morrer não perderemos nenhum dado pois está tudo replicado nessa pasta local. 
+
+NODE E MYSQL COM DOCKER-COMPOSE
+
+Após subir o container com docker-compose -f docker-compose.node.yaml up -d --build

@@ -39,6 +39,22 @@ NGINX COMO PROXY REVERSO
 O nginx possui um arquivo chamado nginx.conf onde podemos configurar nossos domínios
 que vamos utilizar.
 
+Observer como está configurado os arquivos nginx/nginx.conf, nginx/dockerfile.prod e 
+laravel/dockerfile.prod
 
+Para fazermos funcionar o nginx como proxy reverso e o laravel servindo a resposta para
+o nginx vamos:
+
+1. docker network create laranet -> criar uma rede onde o container do nginx e do laravel
+irão estar.
+2. Na pasta nginx rode o comando:
+docker build -t pedroaraujonogueira/nginx-proxy:prod -f dockerfile.prod .
+
+3. Na pasta laravel rode o comando:
+docker build -t pedroaraujonogueira/laravel:prod -f dockerfile.prod .
+
+4. docker run -d --network laranet --name laravel pedroaraujonogueira/laravel:prod
+
+5. docker run -d --network laranet --name nginx -p 8080:80 pedroaraujonogueira/nginx-proxy:prod
 
 

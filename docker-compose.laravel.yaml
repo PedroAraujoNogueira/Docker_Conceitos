@@ -3,13 +3,19 @@ version: '3'
 services:
 
   laravel:
+    build:
+      context: ./laravel
+      dockerfile: dockerfile.prod
     image: pedroaraujonogueira/laravel:prod
-    container_name: teste-laravel
+    container_name: laravel
     networks:
      - laranet
-    
+
   nginx: 
-    image: pedroaraujonogueira/nginx-fullcycle
+    build:
+      context: ./nginx
+      dockerfile: dockerfile.prod
+    image: pedroaraujonogueira/nginx-proxy:prod
     container_name: teste-nginx
     networks:
       - laranet

@@ -1,0 +1,1 @@
+Esse arquivo vai ser preenchido quando for rodado o docker-compose.node.yaml

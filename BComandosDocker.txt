@@ -73,3 +73,6 @@ Esse comando vai jogar sua imagem para o seu repositório.
 Faça um teste com o dockerfile.exemplo4
 
 11. docker logs nomeDoContainer -> esse comando vai mostrar os logs do container. 
+
+12. docker run -e -> com essa flag podemos passar variáveis de ambiente para 
+nosso container.
