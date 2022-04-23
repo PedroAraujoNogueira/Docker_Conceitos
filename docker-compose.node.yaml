@@ -6,6 +6,7 @@ services:
     build: 
       context: NodeMySQL
     container_name: node-mysql
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
     volumes:
       - ./NodeMySQL:/usr/src/application
     networks:
@@ -13,6 +14,8 @@ services:
     tty: true
     ports:
       - "3000:3000"
+    depends_on: 
+      - db
 
   db:
     image: mysql:5.7

@@ -37,7 +37,10 @@ digitar coisas diretamente no container nós iremos poder.
 2.10. volumes: vai compartilhar uma pasta do seu computador com o container, funciona 
 igual ao bind mount.
 2.11. environment: colocamos variáveis de ambiente automaticamente assim que o container 
-sobe. Igual ao "docker run -e" 
+sobe. Igual ao "docker run -e".
+2.12. depends_on: esse comando apenas diz que o 
+Container Mysql começará a ser criado primeiro do que o Container Node, porém não 
+garante que o Container Mysql terminará de ser criado antes do Container Node.
 
 3. networks: define as networks que queremos utilizar. Se a network não 
 estiver criada o docker compose vai criar, porém pode ser que crie com um nome diferente
@@ -60,7 +63,6 @@ arquivos dockerfile e mantém o cache do ultimo build. Então para fazermos
 ele buildar novamente com o dockerfile atualizado(o dockerfile após nossa alteração) 
 devemos usar a flag --build. 
 
-
 CRIANDO BANCO DE DADOS MYSQL
 
 Vamos criar um container com mysql usando docker-compose, olhe o arquivo 
@@ -78,6 +80,56 @@ Após subir o container com docker-compose -f docker-compose.node.yaml up -d --b
 aplique os seguintes comandos:
 
 1. docker exec -it node-mysql bash -> para entrar no bash(terminal) do container.
-2. npm i para instalar as dependencias.
+2. npm i
 3. node index.js para rodar a aplicação.
 4. Coloque no navegador localhost:3000 e veja a mensagem da aplicação.
+
+CRIANDO TABELA NO MYSQL
+
+1. docker exec -it db-mysql bash
+2. mysql -uroot -p. Coloque a senha que está no arquivo docker-compose. Caso você não tenha
+alterado então a senha padrão é root.
+3. show databases; 
+Note que tem uma tabela criada com o nome que demos em docker-compose.
+4. use nodedb;
+5. create table people(id int not null auto_increment, name varchar(255), primary key(id));
+6. desc people;
+
+CONECTANDO NODE COM MYSQL
+
+1. Entre no bash do container node -> docker exec -it node-mysql bash
+2. npm install mysql --save
+3. Escrever código para conectar com o MYSQL. 
+
+DEPENDENCIA ENTRE CONTAINERS
+ 
+1. No nosso caso o Node depende do MYSQL, logo queremos que o container node só seja
+iniciado após o container MYSQL. Para isso usamos:
+
+1.1. O atributo depends_on no docker-compose. Porém esse comando apenas diz que o 
+Container Mysql começará a ser criado primeiro do que o Container Node, porém não 
+garante que o Container Mysql terminará de ser criado antes do Container Node.
+
+1.2. Adicionar o script de instalação do dockerize ao nosso dockerfile do Node.
+https://github.com/jwilder/dockerize
+O dockerize é um script que vai garantir que o nosso Container Node só seja iniciado
+após o container Mysql estar no ar. Podemos inclusive fazer um teste:
+1.2.1. docker-compose -f docker-compose.node.yaml down
+1.2.2. docker-compose -f docker-compose.node.yaml up -d --build -> Para rebuildar 
+novamente os dockerfile.
+1.2.3. docker ps -> veja que os dois containers estão no ar.
+1.2.4. docker stop db-mysql -> para pararmos o container do mysql.
+1.2.5. docker exec -it node-mysql bash
+1.2.6. dockerize -wait tcp://db:3306 -> veja que o dockerize faz com que o container Node
+fique tentando se comunicar com o Container mysql. O tempo padrão de tentantivas é de
+10 segundos. Podemos definir um tempo diferente do padrao:
+dockerize -wait tcp://db:3306 -timeout 50s
+
+1.3. Colocar o atributo entrypoint no docker-compose:
+entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
+1.3.1. docker-compose -f docker-compose.node.yaml down
+1.3.2. docker-compose -f docker-compose.node.yaml up -d
+1.3.3. docker ps -> para ver que os dois containers subiram.
+1.3.4. docker logs node-mysql -> nos logs podemos ver que primeiro o 
+container Node ficou esperando para somente após o container MYSQL estar no 
+ar ele poder subir e se connectar.

@@ -1,1 +1,1 @@
-Esse arquivo vai ser preenchido quando for rodado o docker-compose.node.yaml
+Após rodar o comando docker-compose up -d --build essa pasta será preenchida.
